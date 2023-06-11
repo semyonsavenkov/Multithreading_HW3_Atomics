@@ -11,7 +11,7 @@ public class Main {
         AtomicInteger counterFive_digit = new AtomicInteger(0);
 
         Random random = new Random();
-        String[] texts = new String[100];
+        String[] texts = new String[100000];
         for (int i = 0; i < texts.length; i++) {
             texts[i] = generateText("abc", 3 + random.nextInt(3));
         }
@@ -19,7 +19,7 @@ public class Main {
             Arrays.stream(texts)
                     .filter(t -> t.length() == 3)
                     .forEach(t -> {
-                        if (isPalindrome(t) || identicalLetters(t) || ascendingOrder(t)) {
+                        if (identicalLetters(t)) {
                             counterThree_digit.getAndIncrement();
                         }
                     });
@@ -30,7 +30,7 @@ public class Main {
             Arrays.stream(texts)
                     .filter(t -> t.length() == 4)
                     .forEach(t -> {
-                        if (isPalindrome(t) || identicalLetters(t) || ascendingOrder(t)) {
+                        if (isPalindrome(t)) {
                             counterFour_digit.getAndIncrement();
                         }
                     });
@@ -41,7 +41,7 @@ public class Main {
             Arrays.stream(texts)
                     .filter(t -> t.length() == 5)
                     .forEach(t -> {
-                        if (isPalindrome(t) || identicalLetters(t) || ascendingOrder(t)) {
+                        if (ascendingOrder(t)) {
                             counterFive_digit.getAndIncrement();
                         }
                     });
@@ -84,7 +84,9 @@ public class Main {
         char[] symbolsArray = text.toCharArray();
         final char[] intactArray = symbolsArray.clone();
         Arrays.sort(symbolsArray);
-        if (symbolsArray.equals(intactArray)) {
+        String intactString = new String(intactArray);
+        String sortedString = new String(symbolsArray);
+        if (intactString.equals(sortedString)) {
             orderIsAscending = true;
         } else {
             orderIsAscending = false;
