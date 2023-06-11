@@ -57,14 +57,14 @@ public class Main {
     }
 
     public static boolean identicalLetters(String text) {
-        boolean lettersAreIdintical = true;
+        boolean lettersAreIdentical = true;
         char firstSymbol = text.charAt(0);
         for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) != firstSymbol) {
-                lettersAreIdintical = false;
+                lettersAreIdentical = false;
             }
         }
-        return lettersAreIdintical;
+        return lettersAreIdentical;
     }
 
     public static boolean isPalindrome(String text) {
