@@ -17,11 +17,8 @@ public class Main {
         }
         Thread thread1 = new Thread(() -> {
             Arrays.stream(texts)
-                    .filter(t -> t.length() == 3)
                     .forEach(t -> {
-                        if (identicalLetters(t)) {
-                            counterThree_digit.getAndIncrement();
-                        }
+                        identicalLetters(t, counterThree_digit, counterFour_digit, counterFive_digit);
                     });
         });
         thread1.start();
@@ -30,20 +27,15 @@ public class Main {
             Arrays.stream(texts)
                     .filter(t -> t.length() == 4)
                     .forEach(t -> {
-                        if (isPalindrome(t)) {
-                            counterFour_digit.getAndIncrement();
-                        }
+                        isPalindrome(t, counterThree_digit, counterFour_digit, counterFive_digit);
                     });
         });
         thread2.start();
 
         Thread thread3 = new Thread(() -> {
             Arrays.stream(texts)
-                    .filter(t -> t.length() == 5)
                     .forEach(t -> {
-                        if (ascendingOrder(t)) {
-                            counterFive_digit.getAndIncrement();
-                        }
+                        ascendingOrder(t, counterThree_digit, counterFour_digit, counterFive_digit);
                     });
         });
         thread3.start();
@@ -56,29 +48,47 @@ public class Main {
         System.out.println("Красивых слов с длиной 5: " + counterFive_digit + " шт.");
     }
 
-    public static boolean identicalLetters(String text) {
-        boolean lettersAreIdentical = true;
+    public static void identicalLetters(String text, AtomicInteger counterThree_digit, AtomicInteger counterFour_digit, AtomicInteger counterFive_digit) {
         char firstSymbol = text.charAt(0);
         for (int i = 0; i < text.length(); i++) {
             if (text.charAt(i) != firstSymbol) {
-                lettersAreIdentical = false;
+                switch (text.length()) {
+                    case 3:
+                        counterThree_digit.getAndIncrement();
+                        break;
+                    case 4:
+                        counterFour_digit.getAndIncrement();
+                        break;
+                    case 5:
+                        counterFive_digit.getAndIncrement();
+                        break;
+                }
+            } else {
+                return;
             }
         }
-        return lettersAreIdentical;
     }
 
-    public static boolean isPalindrome(String text) {
-        boolean isPalindrome;
+    public static void isPalindrome(String text, AtomicInteger counterThree_digit, AtomicInteger counterFour_digit, AtomicInteger counterFive_digit) {
         StringBuilder sb = new StringBuilder(text);
         if (sb.reverse().toString().equals(text)) {
-            isPalindrome = true;
+            switch (text.length()) {
+                case 3:
+                    counterThree_digit.getAndIncrement();
+                    break;
+                case 4:
+                    counterFour_digit.getAndIncrement();
+                    break;
+                case 5:
+                    counterFive_digit.getAndIncrement();
+                    break;
+            }
         } else {
-            isPalindrome = false;
+            return;
         }
-        return isPalindrome;
     }
 
-    public static boolean ascendingOrder(String text) {
+    public static void ascendingOrder(String text, AtomicInteger counterThree_digit, AtomicInteger counterFour_digit, AtomicInteger counterFive_digit) {
         boolean orderIsAscending;
 
         char[] symbolsArray = text.toCharArray();
@@ -87,11 +97,20 @@ public class Main {
         String intactString = new String(intactArray);
         String sortedString = new String(symbolsArray);
         if (intactString.equals(sortedString)) {
-            orderIsAscending = true;
+            switch (text.length()) {
+                case 3:
+                    counterThree_digit.getAndIncrement();
+                    break;
+                case 4:
+                    counterFour_digit.getAndIncrement();
+                    break;
+                case 5:
+                    counterFive_digit.getAndIncrement();
+                    break;
+            }
         } else {
-            orderIsAscending = false;
+            return;
         }
-        return orderIsAscending;
     }
 
     public static String generateText(String letters, int length) {
